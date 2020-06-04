@@ -4,6 +4,8 @@ if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'syntax.php');
 include_once('headeratx.php');
+
+use dokuwiki\Parsing\Handler\Quote;
  
 class syntax_plugin_markdowku_blockquotes extends DokuWiki_Syntax_Plugin {
 
@@ -52,14 +54,14 @@ class syntax_plugin_markdowku_blockquotes extends DokuWiki_Syntax_Plugin {
         $quoteinarg = preg_replace('/^\n[ \t]*>(?:[ \t>]*>)?[ \t]?/', '', $match);
 
         if ($state == DOKU_LEXER_ENTER) {
-            $ReWriter = new Doku_Handler_Markdown_Quote($handler->CallWriter);
-            $handler->CallWriter = & $ReWriter;
+            $ReWriter = new Doku_Handler_Markdown_Quote($handler->getCallWriter());
+            $handler->setCallWriter($ReWriter);
             $handler->_addCall('quote_start', $quotearg, $pos);
         } elseif ($state == DOKU_LEXER_EXIT) {
             $handler->_addCall('quote_end', array(), $pos);
-            $handler->CallWriter->process();
-            $ReWriter = & $handler->CallWriter;
-            $handler->CallWriter = & $ReWriter->CallWriter;
+            $handler->getCallWriter()->process();
+            $ReWriter = & $handler->getCallWriter();
+            $handler->setCallWriter($ReWriter->getCallWriter());
         }
 
         if ($quoteinarg == '') {
@@ -92,7 +94,7 @@ class syntax_plugin_markdowku_blockquotes extends DokuWiki_Syntax_Plugin {
     }
 }
 
-class Doku_Handler_Markdown_Quote extends Doku_Handler_Quote {
+class Doku_Handler_Markdown_Quote extends Quote {
     function getDepth($marker) {
         $quoteLength = 0;
         $position = 0;

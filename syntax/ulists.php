@@ -8,6 +8,8 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'syntax.php');
+
+use dokuwiki\Parsing\Handler\Lists;
  
 class syntax_plugin_markdowku_ulists extends DokuWiki_Syntax_Plugin {
     function getType()  { return 'container'; }
@@ -38,8 +40,8 @@ class syntax_plugin_markdowku_ulists extends DokuWiki_Syntax_Plugin {
     function handle($match, $state, $pos, Doku_Handler $handler) {
         switch ($state) {
             case DOKU_LEXER_ENTER:
-                $ReWriter = new Doku_Handler_Markdown_Unordered_List($handler->CallWriter);
-                $handler->CallWriter = & $ReWriter;
+                $ReWriter = new Doku_Handler_Markdown_Unordered_List($handler->getCallWriter());
+                $handler->setCallWriter($ReWriter);
                 $handler->_addCall('list_open', array($match), $pos);
                 break;
             case DOKU_LEXER_MATCHED:
@@ -50,9 +52,9 @@ class syntax_plugin_markdowku_ulists extends DokuWiki_Syntax_Plugin {
                 break;
             case DOKU_LEXER_EXIT:
                 $handler->_addCall('list_close', array(), $pos);
-                $handler->CallWriter->process();
-                $ReWriter = & $handler->CallWriter;
-                $handler->CallWriter = & $ReWriter->CallWriter;
+                $handler->getCallWriter()->process();
+                $ReWriter = & $handler->getCallWriter();
+                $handler->setCallWriter($ReWriter->getCallWriter());
                 break;
         }
         return true;
@@ -63,7 +65,7 @@ class syntax_plugin_markdowku_ulists extends DokuWiki_Syntax_Plugin {
     }
 }
 
-class Doku_Handler_Markdown_Unordered_List extends Doku_Handler_List {
+class Doku_Handler_Markdown_Unordered_List extends Lists {
     private $depth = array(0, 4);
 
     function interpretSyntax($match, &$type) {

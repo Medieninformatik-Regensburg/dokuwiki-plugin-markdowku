@@ -36,16 +36,16 @@ class syntax_plugin_markdowku_headeratx extends DokuWiki_Syntax_Plugin {
         elseif ($level > 6)
             $level = 6;
 
-        if ($handler->status['section'])
+        if ($handler->getStatus('section'))
             $handler->_addCall('section_close', array(), $pos);
         if ($level <= $conf['maxseclevel']) {
-            $handler->status['section_edit_start'] = $pos;
-            $handler->status['section_edit_level'] = $level;
-            $handler->status['section_edit_title'] = $title;
+            $handler->setStatus('section_edit_start', $pos);
+            $handler->setStatus('section_edit_level', $level);
+            $handler->setStatus('section_edit_title', $title);
         }
         $handler->_addCall('header', array($title, $level, $pos), $pos);
         $handler->_addCall('section_open', array($level), $pos);
-        $handler->status['section'] = true;
+        $handler->setStatus('section', true);
 
         return true;
     }

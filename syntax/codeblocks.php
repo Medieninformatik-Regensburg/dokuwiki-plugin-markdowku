@@ -7,6 +7,8 @@ if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'syntax.php');
 
+use dokuwiki\Parsing\Handler\Preformatted;
+
 class syntax_plugin_markdowku_codeblocks extends DokuWiki_Syntax_Plugin {
 
     function getType()  { return 'protected'; }
@@ -33,8 +35,8 @@ class syntax_plugin_markdowku_codeblocks extends DokuWiki_Syntax_Plugin {
     function handle($match, $state, $pos, Doku_Handler $handler) {
         switch ($state) {
             case DOKU_LEXER_ENTER:
-                $ReWriter = new Doku_Handler_Preformatted($handler->CallWriter);
-                $handler->CallWriter = & $ReWriter;
+                $ReWriter = new Preformatted($handler->callWriter);
+                $handler->callWriter = & $ReWriter;
                 $handler->_addCall('preformatted_start', array($match), $pos);
                 break;
             case DOKU_LEXER_MATCHED:
@@ -46,9 +48,9 @@ class syntax_plugin_markdowku_codeblocks extends DokuWiki_Syntax_Plugin {
             case DOKU_LEXER_EXIT:
                 $handler->_addCall('preformatted_end', array(), $pos);
                 $handler->_addCall('preformatted_content', array($match), $pos);
-                $handler->CallWriter->process();
-                $ReWriter = & $handler->CallWriter;
-                $handler->CallWriter = & $ReWriter->CallWriter;
+                $handler->callWriter->process();
+                $ReWriter = & $handler->callWriter;
+                $handler->callWriter = & $ReWriter->callWriter;
                 break;
         }
         return true;
