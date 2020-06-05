@@ -1,7 +1,7 @@
 base   markdowku
-author Julian Fagir
-email  gnrp@komkon2.de
-date   2017-02-19
+author Raphael Wimmer
+email  raphael.wimmer@ur.de
+date   2020-06-06
 name   Markdowku
 desc   Integrates Markdown into Dokuwiki syntax
-url    http://www.tolledomain.ch/dokuwiki/doku.php?id=projects:markdowku
+url    https://www.dokuwiki.org/plugin:markdowku
