@@ -48,9 +48,9 @@ class syntax_plugin_markdowku_codeblocks extends DokuWiki_Syntax_Plugin {
             case DOKU_LEXER_EXIT:
                 $handler->_addCall('preformatted_end', array(), $pos);
                 $handler->_addCall('preformatted_content', array($match), $pos);
-                $handler->getCallWriter->process();
-                $ReWriter = & $handler->getCallWriter;
-                $handler->setCallWriter($ReWriter->getCallWriter);
+                $handler->getCallWriter()->process();
+                $ReWriter = & $handler->getCallWriter();
+                $handler->setCallWriter($ReWriter->getCallWriter());
                 break;
         }
         return true;
