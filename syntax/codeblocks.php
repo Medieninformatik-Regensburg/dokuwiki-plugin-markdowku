@@ -35,8 +35,8 @@ class syntax_plugin_markdowku_codeblocks extends DokuWiki_Syntax_Plugin {
     function handle($match, $state, $pos, Doku_Handler $handler) {
         switch ($state) {
             case DOKU_LEXER_ENTER:
-                $ReWriter = new Preformatted($handler->callWriter);
-                $handler->callWriter = & $ReWriter;
+                $ReWriter = new Preformatted($handler->getCallWriter());
+                $handler->setCallWriter($ReWriter);
                 $handler->_addCall('preformatted_start', array($match), $pos);
                 break;
             case DOKU_LEXER_MATCHED:
@@ -48,9 +48,9 @@ class syntax_plugin_markdowku_codeblocks extends DokuWiki_Syntax_Plugin {
             case DOKU_LEXER_EXIT:
                 $handler->_addCall('preformatted_end', array(), $pos);
                 $handler->_addCall('preformatted_content', array($match), $pos);
-                $handler->callWriter->process();
-                $ReWriter = & $handler->callWriter;
-                $handler->callWriter = & $ReWriter->callWriter;
+                $handler->getCallWriter->process();
+                $ReWriter = & $handler->getCallWriter;
+                $handler->setCallWriter($ReWriter->getCallWriter);
                 break;
         }
         return true;
