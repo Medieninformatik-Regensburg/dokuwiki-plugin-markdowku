@@ -7,6 +7,9 @@ if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'syntax.php');
 
+# Fix for Hogfather RC2 - see https://github.com/dwp-forge/columns/issues/5#issuecomment-638467603
+require_once(DOKU_INC.'inc/Parsing/Lexer/Lexer.php');
+
 class syntax_plugin_markdowku_italicasterisk extends DokuWiki_Syntax_Plugin {
 
     function getType()  { return 'formatting'; }
