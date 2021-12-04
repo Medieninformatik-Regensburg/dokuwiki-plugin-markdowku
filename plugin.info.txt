@@ -1,7 +1,7 @@
 base   markdowku
 author Raphael Wimmer
 email  raphael.wimmer@ur.de
-date   2020-06-06
+date   2021-12-04
 name   Markdowku
 desc   Integrates Markdown into Dokuwiki syntax
 url    https://www.dokuwiki.org/plugin:markdowku
