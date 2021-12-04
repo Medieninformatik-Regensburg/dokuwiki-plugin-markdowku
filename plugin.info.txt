@@ -1,5 +1,5 @@
 base   markdowku
-author Raphael Wimmer
+author Julian Fagir, Raphael Wimmer (maintainer)
 email  raphael.wimmer@ur.de
 date   2021-12-04
 name   Markdowku
