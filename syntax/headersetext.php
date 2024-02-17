@@ -20,27 +20,27 @@ class syntax_plugin_markdowku_headersetext extends DokuWiki_Syntax_Plugin {
 
     function connectTo($mode) {
         $this->Lexer->addSpecialPattern(
-            '\n[^\n]+[ \t]*\n=+[ \t]*(?=\n)',
+            '^[^\n]+[ \t]*\n=+[ \t]*(?=\n)',
             'base',
             'plugin_markdowku_headersetext');
 
         $this->Lexer->addSpecialPattern(
-            '\n[^\n]+[ \t]*\n-+[ \t]*(?=\n)',
+            '^[^\n]+[ \t]*\n-+[ \t]*(?=\n)',
             'base',
             'plugin_markdowku_headersetext');
     }
 
     function handle($match, $state, $pos, Doku_Handler $handler) {
-        $title = preg_replace('/^\n(.+?)[ \t]*\n.*/', '\1', $match);
+        $title = preg_replace('/^(.+?)[ \t]*\n.*/', '\1', $match);
         $title = trim($title);
-        if (preg_match('/^\n(.+?)[ \t]*\n=/', $match))
+        if (preg_match('/^(.+?)[ \t]*\n=/', $match))
             $level = 1;
-        if (preg_match('/^\n(.+?)[ \t]*\n-/', $match))
+        if (preg_match('/^(.+?)[ \t]*\n-/', $match))
             $level = 2;
 
         if ($handler->getStatus('section'))
             $handler->_addCall('section_close', array(), $pos);
-        $handler->setStatus('section_edit_start', $pos);
+        $handler->setStatus('section_edit_start', $pos-1);
         $handler->setStatus('section_edit_level', $level);
         $handler->setStatus('section_edit_title', $title);
         $handler->_addCall('header', array($title, $level, $pos), $pos);
