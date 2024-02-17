@@ -18,7 +18,7 @@ class syntax_plugin_markdowku_headeratx extends DokuWiki_Syntax_Plugin {
   
     function connectTo($mode) {
         $this->Lexer->addSpecialPattern(
-            '\n\#{1,6}[ \t]*.+?[ \t]*\#*(?=\n+)',
+            '^\#{1,6}[ \t]*.+?[ \t]*\#*(?=\n+)',
             'base',
             'plugin_markdowku_headeratx');
     }
@@ -39,7 +39,7 @@ class syntax_plugin_markdowku_headeratx extends DokuWiki_Syntax_Plugin {
         if ($handler->getStatus('section'))
             $handler->_addCall('section_close', array(), $pos);
         if ($level <= $conf['maxseclevel']) {
-            $handler->setStatus('section_edit_start', $pos);
+            $handler->setStatus('section_edit_start', $pos-1);
             $handler->setStatus('section_edit_level', $level);
             $handler->setStatus('section_edit_title', $title);
         }
